@@ -16,7 +16,7 @@ import { FindOneParams } from '../artist/dto/find-one-params.dto';
 @Controller('album')
 export class AlbumController {
   constructor(private readonly albumService: AlbumService) {}
-  
+
   @Post()
   @HttpCode(201)
   create(@Body() createAlbumDto: CreateAlbumDto) {
@@ -27,7 +27,7 @@ export class AlbumController {
   findAll() {
     return this.albumService.findAll().map((album) => album.getAlbumData());
   }
-  
+
   @Get(':id')
   findOne(@Param() params: FindOneParams) {
     return this.albumService.findOne(params.id).getAlbumData();
@@ -40,7 +40,7 @@ export class AlbumController {
   ) {
     return this.albumService.update(params.id, updateAlbumDto).getAlbumData();
   }
-  
+
   @Delete(':id')
   @HttpCode(204)
   remove(@Param() params: FindOneParams) {
