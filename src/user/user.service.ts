@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { User, UserDto } from './entities/user.entity';
 
 @Injectable()
@@ -7,7 +12,7 @@ export class UserService {
 
   createUser(login: string, password: string): User {
     const newUser = new User(login, password);
-    this.users.set(newUser.getId(), newUser); 
+    this.users.set(newUser.getId(), newUser);
     return newUser;
   }
 
@@ -19,7 +24,11 @@ export class UserService {
     return user.getUserData();
   }
 
-  updateUserPassword(userId: string, oldPassword: string, newPassword: string): User {
+  updateUserPassword(
+    userId: string,
+    oldPassword: string,
+    newPassword: string,
+  ): User {
     const user = this.users.get(userId);
     if (!user) {
       throw new Error('User not found');
