@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
@@ -68,5 +69,25 @@ export class TrackService {
         track.unlinkArtist();
       }
     }
+  }
+
+  favorite(id: string) {
+    const track = this.#map.get(id);
+    if (!track) {
+      throw new UnprocessableEntityException('Track not found');
+    }
+    track.like();
+  }
+
+  unfavorite(id: string) {
+    const track = this.#map.get(id);
+    if (!track) {
+      throw new UnprocessableEntityException('Track not found');
+    }
+    track.unlike();
+  }
+
+  getFavoriteTracks() {
+    return Array.from(this.#map.values()).filter((track) => track.isLiked());
   }
 }

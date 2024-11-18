@@ -6,12 +6,14 @@ export class Album {
   #name: string;
   #year: number;
   #artistId: string | null;
+  #liked: boolean;
 
   constructor(name: string, year: number, artistid: string) {
     this.#id = uuidv4();
     this.#name = name;
     this.#year = year;
     this.#artistId = artistid;
+    this.#liked = false;
   }
 
   getId() {
@@ -43,6 +45,18 @@ export class Album {
       }
       this.#artistId = artistId;
     }
+  }
+
+  like() {
+    this.#liked = true;
+  }
+
+  unlike() {
+    this.#liked = false;
+  }
+
+  isLiked() {
+    return this.#liked;
   }
 
   unlinkArtist() {

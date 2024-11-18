@@ -4,10 +4,12 @@ export class Artist {
   readonly #id: string;
   #name: string;
   #hasWonGrammy: boolean;
+  #liked: boolean;
   constructor(name: string, hasWonGrammy: boolean) {
     this.#id = uuidv4();
     this.#name = name;
     this.#hasWonGrammy = hasWonGrammy;
+    this.#liked = false;
   }
 
   getId(): string {
@@ -30,5 +32,17 @@ export class Artist {
       name: this.#name,
       grammy: this.#hasWonGrammy,
     };
+  }
+
+  like() {
+    this.#liked = true;
+  }
+
+  unlike() {
+    this.#liked = false;
+  }
+
+  isLiked() {
+    return this.#liked;
   }
 }

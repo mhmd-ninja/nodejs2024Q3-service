@@ -7,6 +7,7 @@ export class Track {
   #artistId: string | null;
   #albumId: string | null;
   #duration: number;
+  #liked: boolean;
 
   constructor(
     name: string,
@@ -19,6 +20,7 @@ export class Track {
     this.#artistId = artistId;
     this.#albumId = albumId;
     this.#duration = duration;
+    this.#liked = false;
   }
 
   getId() {
@@ -64,9 +66,22 @@ export class Track {
     }
   }
 
+  like() {
+    this.#liked = true;
+  }
+
+  unlike() {
+    this.#liked = false;
+  }
+
+  isLiked() {
+    return this.#liked;
+  }
+
   unlinkArtist() {
     this.#artistId = null;
   }
+
   unlinkAlbum() {
     this.#albumId = null;
   }
