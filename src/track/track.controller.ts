@@ -39,7 +39,7 @@ export class TrackController {
   ) {
     return this.trackService.update(params.id, updateTrackDto).getTrackData();
   }
-  
+
   @Delete(':id')
   @HttpCode(204)
   remove(@Param() params: FindOneParams) {
