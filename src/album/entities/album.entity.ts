@@ -18,7 +18,19 @@ export class Album {
     return this.#id;
   }
 
-  update(name?: string, year?: number, artistId?: string) {
+  getArtistId() {
+    return this.#artistId;
+  }
+
+  update({
+    name,
+    year,
+    artistId,
+  }: {
+    name?: string;
+    year?: number;
+    artistId?: string;
+  }) {
     if (name) {
       this.#name = name;
     }
@@ -31,6 +43,10 @@ export class Album {
       }
       this.#artistId = artistId;
     }
+  }
+
+  unlinkArtist() {
+    this.#artistId = null;
   }
 
   getAlbumData(): AlbumDto {

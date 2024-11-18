@@ -9,7 +9,7 @@ import { Track } from './entities/track.entity';
 @Injectable()
 export class TrackService {
   #map = new Map<string, Track>();
-  
+
   create(dto: CreateTrackDto) {
     const track = new Track(dto.name, dto.duration, dto.artistId, dto.albumId);
     this.#map.set(track.getId(), track);
@@ -34,7 +34,12 @@ export class TrackService {
       throw new NotFoundException('Track not found');
     }
     try {
-      track.update(dto.name, dto.duration, dto.artistId, dto.albumId);
+      track.update({
+        name: dto.name,
+        duration: dto.duration,
+        artistId: dto.artistId,
+        albumId: dto.albumId,
+      });
     } catch (e) {
       throw new BadRequestException(e.message);
     }
@@ -47,5 +52,13 @@ export class TrackService {
       throw new NotFoundException('Track not found');
     }
     return this.#map.delete(id);
+  }
+
+  unlinkTracksByAlbum(id: string) {
+    for (const track of this.#map.values()) {
+      if (track.getAlbumId() === id) {
+        track.unlinkAlbum();
+      }
+    }
   }
 }
