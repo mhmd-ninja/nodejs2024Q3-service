@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import * as bcrypt from 'bcryptjs';
 
 export interface UserDto {
   id: string;
@@ -19,7 +20,7 @@ export class User {
   constructor(login: string, password: string) {
     this.id = uuidv4();
     this.login = login;
-    this._password = password;
+    this._password = this.generateHashedPassword(password);
     this.version = 1;
     this.createdAt = Date.now();
     this.updatedAt = Date.now();
@@ -30,12 +31,20 @@ export class User {
   }
 
   updatePassword(oldPassword: string, newPassword: string) {
-    if (this._password !== oldPassword) {
+    if (!this.isPasswordsTheSame(oldPassword)) {
       throw new Error('Incorrect old password');
     }
-    this._password = newPassword;
+    this._password = this.generateHashedPassword(newPassword);
     this.version++;
     this.updatedAt = Date.now();
+  }
+
+  isPasswordsTheSame(oldPassword: string): boolean {
+    return bcrypt.compareSync(oldPassword, this._password);
+  }
+
+  generateHashedPassword(password: string): string {
+    return bcrypt.hashSync(password, 11);
   }
 
   getUserData(): UserDto {
@@ -46,5 +55,9 @@ export class User {
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };
+  }
+
+  getLogin(): string {
+    return this.login;
   }
 }

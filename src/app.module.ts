@@ -10,6 +10,7 @@ import { RouterModule } from '@nestjs/core';
 import { FavoriteTrackModule } from './favorite/track/favorite-track.module';
 import { FavoriteArtistModule } from './favorite/artist/favorite-artist.module';
 import { FavoriteAlbumModule } from './favorite/album/favorite-album.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { FavoriteAlbumModule } from './favorite/album/favorite-album.module';
         ],
       },
     ]),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
