@@ -30,10 +30,7 @@ export class User {
     return this.id;
   }
 
-  updatePassword(oldPassword: string, newPassword: string) {
-    if (!this.isPasswordsTheSame(oldPassword)) {
-      throw new Error('Incorrect old password');
-    }
+  updatePassword(newPassword: string) {
     this._password = this.generateHashedPassword(newPassword);
     this.version++;
     this.updatedAt = Date.now();
@@ -44,7 +41,7 @@ export class User {
   }
 
   generateHashedPassword(password: string): string {
-    return bcrypt.hashSync(password, 11);
+    return bcrypt.hashSync(password, parseInt(process.env.CRYPT_SALT) || 11);
   }
 
   getUserData(): UserDto {

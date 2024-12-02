@@ -1,24 +1,16 @@
 import {
   Injectable,
   NotFoundException,
-  BadRequestException,
-  ForbiddenException,
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
 import { User, UserDto } from './entities/user.entity';
-import { log } from 'console';
 
 @Injectable()
 export class UserService {
   private users = new Map<string, User>();
 
   createUser(login: string, password: string): UserDto {
-    const existLogin = this.getByLogin(login);
-
-    if (existLogin)
-      throw new HttpException('Login already exist', HttpStatus.BAD_REQUEST);
-
     const newUser = new User(login, password);
     this.users.set(newUser.getId(), newUser);
     return newUser.getUserData();
@@ -41,7 +33,10 @@ export class UserService {
     if (!user) {
       throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
     }
-    user.updatePassword(oldPassword, newPassword);
+    if (!user.isPasswordsTheSame(oldPassword)) {
+      throw new HttpException('Incorrect old password', HttpStatus.BAD_REQUEST);
+    }
+    user.updatePassword(newPassword);
     return user.getUserData();
   }
 

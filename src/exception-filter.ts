@@ -1,10 +1,10 @@
 import { ArgumentsHost, Catch, HttpException } from '@nestjs/common';
 import { Response } from 'express';
-import { FileLoggerService } from './logger';
+import { LoggerService } from './logger';
 
 @Catch(HttpException)
 export class ExceptionFilter {
-  private logger = new FileLoggerService('ExceptionFilter');
+  private logger = new LoggerService('ExceptionFilter');
 
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
